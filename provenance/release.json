@@ -1,10 +1,76 @@
 {
-  "accepted_staging_entries": null,
-  "final_release_artifacts": null,
-  "note": "Populate only after owner visual acceptance; this file is not packaged.",
-  "owner_accepted_staging": null,
-  "repository": "https://github.com/jan-guenter/bluemap-morered-addon",
   "schema_version": 1,
-  "status": "prototype-not-owner-accepted",
-  "version": "0.1.0-SNAPSHOT"
+  "status": "owner-accepted-release-candidate",
+  "version": "0.1.0-alpha.1",
+  "release_date": "2026-08-25",
+  "repository": "https://github.com/jan-guenter/bluemap-morered-addon",
+  "tag": "v0.1.0-alpha.1",
+  "maven_coordinate": "io.github.jan-guenter:bluemap-morered-addon:0.1.0-alpha.1",
+  "owner_accepted_staging": {
+    "commit": "83bad596a72a2bb3a1f7a68076e69b90ea33be42",
+    "tree": "ad7f43afb4793b3c79eac62b6fdbba5532f21faa",
+    "production_jar_size": 93179,
+    "production_jar_sha256": "224387264c2f933d950abece4ed1a73a09b81a693a44082bbe6804072fed8395",
+    "accepted_at": "2026-08-25",
+    "visual_acceptance": true,
+    "gallery_archive_size": 4546,
+    "gallery_archive_sha256": "faebaf1139ebf88b6dc5656fa57276957f6120ceea5e75007f2eb9b0df15a8b8",
+    "fixtures": 77
+  },
+  "accepted_staging_entries": {
+    "path": "provenance/accepted-staging-entries.sha256",
+    "entry_count": 31,
+    "sha256": "f062e22bfe4b9cbc4716b05ebabb66453868f8d0f18a78ac28caf7f1aac0ebdc"
+  },
+  "final_release_artifacts": {
+    "production_jar": {
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.1.jar",
+      "size": 93178,
+      "sha256": "8c146f92d2939a38093423e70dd7db248a28426fade75e5eb0cefb477dcc0f9d"
+    },
+    "sources_jar": {
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.1-sources.jar",
+      "size": 56478,
+      "sha256": "d654247036513ebf968261fe6e80e2062dbca45761b352ff92be23f9bbd0784b"
+    },
+    "pom": {
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.1.pom",
+      "size": 1319,
+      "sha256": "c144c5b76f6ab6c53c4a5b4159492e9da6c502c32650011c31c64e71c6e84df3"
+    },
+    "gradle_module": {
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.1.module.json",
+      "size": 2817,
+      "sha256": "68209f0c70501f6e2b771fdebaa797ccc2b09b2107cf74aded43c004cadc9539"
+    }
+  },
+  "staged_equivalence": {
+    "entry_manifest": "provenance/accepted-staging-entries.sha256",
+    "identical_non_manifest_entries": 31,
+    "whole_jar_byte_identical": false,
+    "only_changed_entry_bytes": "META-INF/MANIFEST.MF",
+    "change_reason": "Implementation-Version changed from the accepted SNAPSHOT marker to the final release version."
+  },
+  "gallery": {
+    "archive_file_name": "bluemap-morered-gallery.zip",
+    "size": 4546,
+    "sha256": "faebaf1139ebf88b6dc5656fa57276957f6120ceea5e75007f2eb9b0df15a8b8",
+    "fixtures": 77,
+    "published_as_release_asset": false
+  },
+  "ephemeral_ci_inputs": {
+    "morered": {
+      "curseforge_project": 387638,
+      "curseforge_file": 5763286,
+      "size": 535669,
+      "sha256": "8075126184f540c6b35b92127088f6cc4c9544627acac9f2287c62a0dfbde74e"
+    },
+    "policy": "Downloaded only into the ephemeral runner, verified before use, and never bundled or uploaded."
+  },
+  "verification": {
+    "production_jar_exact_byte_gate": true,
+    "sources_jar_exact_byte_gate": true,
+    "publication_metadata_exact_byte_gate": true,
+    "exact_input_gate": true
+  }
 }
