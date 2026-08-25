@@ -12,7 +12,6 @@ import de.bluecolored.bluemap.core.map.hires.block.BlockRenderer;
 import de.bluecolored.bluemap.core.map.hires.block.ResourceModelRenderer;
 import de.bluecolored.bluemap.core.resources.pack.resourcepack.ResourcePack;
 import de.bluecolored.bluemap.core.resources.pack.resourcepack.blockstate.Variant;
-import de.bluecolored.bluemap.core.util.Direction;
 import de.bluecolored.bluemap.core.util.Key;
 import de.bluecolored.bluemap.core.util.math.Color;
 import de.bluecolored.bluemap.core.world.BlockState;
@@ -65,7 +64,7 @@ final class MoreRedWireRenderer implements BlockRenderer {
             mapColor.set(0F, 0F, 0F, 0F, true);
             float opacity = 0F;
             for (WireTopology.Part part : WireTopology.parts(
-                    state, direction -> neighbor(block, direction)
+                    state, (x, y, z) -> neighbor(block, x, y, z)
             )) {
                 partColor.set(0F, 0F, 0F, 0F, true);
                 resources.render(
@@ -104,12 +103,8 @@ final class MoreRedWireRenderer implements BlockRenderer {
         });
     }
 
-    private static BlockState neighbor(BlockNeighborhood block, Direction direction) {
-        return block.getNeighborBlock(
-                direction.toVector().getX(),
-                direction.toVector().getY(),
-                direction.toVector().getZ()
-        ).getBlockState();
+    private static BlockState neighbor(BlockNeighborhood block, int x, int y, int z) {
+        return block.getNeighborBlock(x, y, z).getBlockState();
     }
 
     private static boolean isPartsVariant(String blockId, Variant variant) {

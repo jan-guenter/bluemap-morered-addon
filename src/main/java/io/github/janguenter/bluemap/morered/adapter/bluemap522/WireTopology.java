@@ -33,8 +33,7 @@ final class WireTopology {
                 if (face.getAxis() == toward.getAxis() || attached(state, toward)) {
                     continue;
                 }
-                BlockState neighbor = neighbors.at(toward);
-                if (sameWire(blockId, neighbor) && attachedChecked(neighbor, face)) {
+                if (connectsLine(blockId, face, toward, neighbors)) {
                     result.add(Part.line(face, toward));
                 }
             }
@@ -48,8 +47,8 @@ final class WireTopology {
                 if (sideA.getAxis() == sideB.getAxis()) {
                     continue;
                 }
-                BlockState neighborA = neighbors.at(sideA);
-                BlockState neighborB = neighbors.at(sideB);
+                BlockState neighborA = at(neighbors, sideA);
+                BlockState neighborB = at(neighbors, sideB);
                 if (sameWire(blockId, neighborA)
                         && sameWire(blockId, neighborB)
                         && attachedChecked(neighborA, sideB)
@@ -76,6 +75,40 @@ final class WireTopology {
         return state != null && blockId.equals(state.getId().getFormatted());
     }
 
+    private static boolean connectsLine(
+            String blockId,
+            Direction face,
+            Direction toward,
+            NeighborLookup neighbors
+    ) {
+        BlockState neighbor = at(neighbors, toward);
+        String neighborId = neighbor == null ? "" : neighbor.getId().getFormatted();
+        if (!MoreRedWireCatalog.coplanarCompatible(blockId, neighborId)) {
+            return false;
+        }
+        if (attachedChecked(neighbor, face)) {
+            return true;
+        }
+        if (!blockId.equals(neighborId)) {
+            return false;
+        }
+        BlockState diagonal = at(neighbors, toward, face);
+        return sameWire(blockId, diagonal)
+                && attachedChecked(diagonal, toward.getOpposite());
+    }
+
+    private static BlockState at(NeighborLookup neighbors, Direction... directions) {
+        int x = 0;
+        int y = 0;
+        int z = 0;
+        for (Direction direction : directions) {
+            x += direction.toVector().getX();
+            y += direction.toVector().getY();
+            z += direction.toVector().getZ();
+        }
+        return neighbors.at(x, y, z);
+    }
+
     private static boolean attachedChecked(BlockState state, Direction direction) {
         if (!validFaces(state)) {
             throw new IllegalArgumentException("malformed adjacent More Red wire state");
@@ -93,7 +126,7 @@ final class WireTopology {
 
     @FunctionalInterface
     interface NeighborLookup {
-        BlockState at(Direction direction);
+        BlockState at(int x, int y, int z);
     }
 
     record Part(Kind kind, Direction sideA, Direction sideB) {

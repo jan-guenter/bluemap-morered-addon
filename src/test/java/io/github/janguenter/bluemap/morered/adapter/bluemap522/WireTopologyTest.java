@@ -14,7 +14,6 @@ import de.bluecolored.bluemap.core.util.Key;
 import de.bluecolored.bluemap.core.world.BlockState;
 import org.junit.jupiter.api.Test;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -26,12 +25,12 @@ class WireTopologyTest {
 
     @Test
     void emitsOneCoplanarHalfLineForMatchingSameIdFaces() {
-        Map<Direction, BlockState> neighbors = new EnumMap<>(Direction.class);
-        neighbors.put(Direction.NORTH, state(WIRE, Direction.DOWN));
+        Map<Offset, BlockState> neighbors = new HashMap<>();
+        neighbors.put(offset(Direction.NORTH), state(WIRE, Direction.DOWN));
 
         List<WireTopology.Part> parts = WireTopology.parts(
                 state(WIRE, Direction.DOWN),
-                direction -> neighbors.getOrDefault(direction, BlockState.AIR)
+                lookup(neighbors)
         );
 
         assertTrue(parts.contains(WireTopology.Part.line(
@@ -42,12 +41,12 @@ class WireTopologyTest {
 
     @Test
     void leavesTheSharedJunctionToTheAuthoredElbowVariant() {
-        Map<Direction, BlockState> neighbors = new EnumMap<>(Direction.class);
-        neighbors.put(Direction.NORTH, state(WIRE, Direction.DOWN));
+        Map<Offset, BlockState> neighbors = new HashMap<>();
+        neighbors.put(offset(Direction.NORTH), state(WIRE, Direction.DOWN));
 
         List<WireTopology.Part> parts = WireTopology.parts(
                 state(WIRE, Direction.DOWN, Direction.NORTH),
-                direction -> neighbors.getOrDefault(direction, BlockState.AIR)
+                lookup(neighbors)
         );
 
         assertFalse(parts.contains(WireTopology.Part.line(
@@ -57,13 +56,13 @@ class WireTopologyTest {
 
     @Test
     void emitsConvexEdgeFromTwoSameIdNeighborFaces() {
-        Map<Direction, BlockState> neighbors = new EnumMap<>(Direction.class);
-        neighbors.put(Direction.DOWN, state(WIRE, Direction.NORTH));
-        neighbors.put(Direction.NORTH, state(WIRE, Direction.DOWN));
+        Map<Offset, BlockState> neighbors = new HashMap<>();
+        neighbors.put(offset(Direction.DOWN), state(WIRE, Direction.NORTH));
+        neighbors.put(offset(Direction.NORTH), state(WIRE, Direction.DOWN));
 
         List<WireTopology.Part> parts = WireTopology.parts(
                 state(WIRE),
-                direction -> neighbors.getOrDefault(direction, BlockState.AIR)
+                lookup(neighbors)
         );
 
         assertEquals(List.of(WireTopology.Part.edge(
@@ -73,13 +72,52 @@ class WireTopologyTest {
 
     @Test
     void rejectsMalformedSameIdNeighborsInsteadOfGuessing() {
-        Map<Direction, BlockState> neighbors = new EnumMap<>(Direction.class);
-        neighbors.put(Direction.NORTH, new BlockState(Key.parse(WIRE)));
+        Map<Offset, BlockState> neighbors = new HashMap<>();
+        neighbors.put(offset(Direction.NORTH), new BlockState(Key.parse(WIRE)));
 
         assertThrows(IllegalArgumentException.class, () -> WireTopology.parts(
                 state(WIRE, Direction.DOWN),
-                direction -> neighbors.getOrDefault(direction, BlockState.AIR)
+                lookup(neighbors)
         ));
+    }
+
+    @Test
+    void connectsOnlyTheAuditedMixedMediaPairs() {
+        Map<Offset, BlockState> compatible = new HashMap<>();
+        compatible.put(
+                offset(Direction.NORTH),
+                state("morered:white_network_cable", Direction.DOWN)
+        );
+        assertTrue(WireTopology.parts(
+                state(WIRE, Direction.DOWN), lookup(compatible)
+        ).contains(WireTopology.Part.line(Direction.DOWN, Direction.NORTH)));
+
+        Map<Offset, BlockState> incompatible = new HashMap<>();
+        incompatible.put(
+                offset(Direction.NORTH),
+                state("morered:bundled_network_cable", Direction.DOWN)
+        );
+        assertFalse(WireTopology.parts(
+                state(WIRE, Direction.DOWN), lookup(incompatible)
+        ).contains(WireTopology.Part.line(Direction.DOWN, Direction.NORTH)));
+    }
+
+    @Test
+    void continuesSameBlockLineIntoTheDiagonalConvexLeg() {
+        Map<Offset, BlockState> neighbors = new HashMap<>();
+        neighbors.put(offset(Direction.UP), state(WIRE));
+        neighbors.put(
+                offset(Direction.UP, Direction.NORTH),
+                state(WIRE, Direction.DOWN)
+        );
+
+        List<WireTopology.Part> parts = WireTopology.parts(
+                state(WIRE, Direction.NORTH), lookup(neighbors)
+        );
+
+        assertTrue(parts.contains(WireTopology.Part.line(
+                Direction.NORTH, Direction.UP
+        )));
     }
 
     private static BlockState state(String id, Direction... attached) {
@@ -92,5 +130,28 @@ class WireTopologyTest {
         }
         properties.put("transform", "identity");
         return new BlockState(Key.parse(id), Map.copyOf(properties));
+    }
+
+    private static WireTopology.NeighborLookup lookup(
+            Map<Offset, BlockState> neighbors
+    ) {
+        return (x, y, z) -> neighbors.getOrDefault(
+                new Offset(x, y, z), BlockState.AIR
+        );
+    }
+
+    private static Offset offset(Direction... directions) {
+        int x = 0;
+        int y = 0;
+        int z = 0;
+        for (Direction direction : directions) {
+            x += direction.toVector().getX();
+            y += direction.toVector().getY();
+            z += direction.toVector().getZ();
+        }
+        return new Offset(x, y, z);
+    }
+
+    private record Offset(int x, int y, int z) {
     }
 }

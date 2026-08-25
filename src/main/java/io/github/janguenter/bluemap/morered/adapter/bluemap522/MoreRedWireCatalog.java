@@ -65,11 +65,40 @@ final class MoreRedWireCatalog {
         return BLOCK_ID_SET.contains(blockId);
     }
 
+    static boolean coplanarCompatible(String first, String second) {
+        if (!owns(first) || !owns(second)) {
+            return false;
+        }
+        if (first.equals(second)) {
+            return true;
+        }
+        Medium firstMedium = medium(first);
+        Medium secondMedium = medium(second);
+        return firstMedium == Medium.COLORED && secondMedium != Medium.COLORED
+                || secondMedium == Medium.COLORED && firstMedium != Medium.COLORED;
+    }
+
+    private static Medium medium(String blockId) {
+        if ("morered:red_alloy_wire".equals(blockId)) {
+            return Medium.RED_ALLOY;
+        }
+        if ("morered:bundled_network_cable".equals(blockId)) {
+            return Medium.BUNDLED;
+        }
+        return Medium.COLORED;
+    }
+
     private static String path(String blockId) {
         int separator = blockId.indexOf(':');
         if (separator < 0 || separator == blockId.length() - 1) {
             throw new IllegalArgumentException("block id has no path");
         }
         return blockId.substring(separator + 1);
+    }
+
+    private enum Medium {
+        RED_ALLOY,
+        BUNDLED,
+        COLORED
     }
 }
