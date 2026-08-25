@@ -94,6 +94,8 @@ def main() -> int:
         "topology-convex-bundled",
         "topology-concave-red-alloy",
         "topology-unlike-colors",
+        "topology-red-colored",
+        "topology-bundled-colored",
     ):
         if required not in functions:
             raise ValueError(f"special topology case missing: {required}")
@@ -104,7 +106,7 @@ def main() -> int:
     print(
         f"More Red gallery lint passed: {len(cases.PLACEMENTS)} anchors, "
         f"{len(expected_ids)} registered blocks, {len(cases.WIRE_IDS)} wire families, "
-        "4 special topology cases"
+        "6 special topology cases"
     )
     return 0
 

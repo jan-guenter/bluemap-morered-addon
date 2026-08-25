@@ -81,4 +81,8 @@ execute unless block 180 100 186 morered:bundled_network_cable run tellraw @a {"
 execute unless block 186 100 186 morered:red_alloy_wire run tellraw @a {"text":"gallery mismatch: topology-concave-red-alloy","color":"red"}
 execute unless block 192 100 186 morered:red_network_cable run tellraw @a {"text":"gallery mismatch: topology-unlike-red","color":"red"}
 execute unless block 193 100 186 morered:blue_network_cable run tellraw @a {"text":"gallery mismatch: topology-unlike-blue","color":"red"}
+execute unless block 198 100 182 morered:red_alloy_wire run tellraw @a {"text":"gallery mismatch: topology-red-colored-red","color":"red"}
+execute unless block 199 100 182 morered:red_network_cable run tellraw @a {"text":"gallery mismatch: topology-red-colored-cable","color":"red"}
+execute unless block 198 100 186 morered:bundled_network_cable run tellraw @a {"text":"gallery mismatch: topology-bundled-colored-bundled","color":"red"}
+execute unless block 199 100 186 morered:blue_network_cable run tellraw @a {"text":"gallery mismatch: topology-bundled-colored-cable","color":"red"}
 tellraw @a {"text":"More Red gallery checked","color":"green"}

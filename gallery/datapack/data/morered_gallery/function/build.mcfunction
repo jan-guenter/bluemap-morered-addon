@@ -250,4 +250,14 @@ setblock 192 99 186 minecraft:stone
 setblock 193 99 186 minecraft:stone
 setblock 192 100 186 morered:red_network_cable[down=true]
 setblock 193 100 186 morered:blue_network_cable[down=true]
+# topology-red-colored: unlike media must form a coplanar line
+setblock 198 99 182 minecraft:stone
+setblock 199 99 182 minecraft:stone
+setblock 198 100 182 morered:red_alloy_wire[down=true]
+setblock 199 100 182 morered:red_network_cable[down=true]
+# topology-bundled-colored: unlike media must form a coplanar line
+setblock 198 99 186 minecraft:stone
+setblock 199 99 186 minecraft:stone
+setblock 198 100 186 morered:bundled_network_cable[down=true]
+setblock 199 100 186 morered:blue_network_cable[down=true]
 function morered_gallery:verify
