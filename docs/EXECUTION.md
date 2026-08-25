@@ -1,7 +1,7 @@
 # Add-on execution
 
-This repository starts inactive and stock-safe. Implement only the smallest
-observed More Red rendering defect before staging.
+This repository stays inactive and stock-safe unless the exact supported More
+Red artifact is present. Keep new work bounded to observed rendering defects.
 
 ## Prototype
 
@@ -39,8 +39,8 @@ Record `visual_acceptance: true` under `owner_accepted_staging`, and record the
 production JAR, sources JAR, POM and Gradle module file names, sizes and hashes
 under `final_release_artifacts`.
 
-Promote `addon_version` through a pull request, remove every
-`SCAFFOLD_NOT_IMPLEMENTED` marker, and run with all exact candidate properties:
+Promote `addon_version` through a pull request, remove every scaffold
+implementation marker, and run with all exact candidate properties:
 
 ```bash
 gradle --no-daemon -PbluemapSourcePath=../bluemap-backport \
