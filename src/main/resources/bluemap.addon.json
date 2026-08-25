@@ -1,0 +1,6 @@
+{
+  "id": "bluemap-morered",
+  "entrypoint": "io.github.janguenter.bluemap.morered.BlueMapMoreRedAddon",
+  "dependencies": [],
+  "soft-dependencies": []
+}

@@ -1,0 +1,37 @@
+{
+  "artifacts": [
+    {
+      "curseforge_file": 5763286,
+      "curseforge_project": 387638,
+      "download_url": "https://www.curseforge.com/api/v1/mods/387638/files/5763286/download",
+      "evidence": "All the Mons 1.2.0 runtime inventory contains the same CurseForge 387638/5763286 artifact as the historical manifest; the retained staging JAR was verified byte-for-byte",
+      "evidence_tier": "T2_ARTIFACT_EXACT",
+      "file_name": "morered-1.21.1-6.0.0.3.jar",
+      "key": "morered",
+      "license": "MIT",
+      "mod_id": "morered",
+      "redistributed": false,
+      "sha1": "a69f18365301470c0fc2b07125c9ba3c10f270f6",
+      "sha256": "8075126184f540c6b35b92127088f6cc4c9544627acac9f2287c62a0dfbde74e",
+      "size": 535669,
+      "version": "1.21.1-6.0.0.3"
+    }
+  ],
+  "bluemap": {
+    "api_commit": "285c9a60eff3ac2b0cab308ce1058d1565be0971",
+    "commit": "9be321df995a1103808621d529eb72773e719d4d",
+    "license": "MIT",
+    "redistributed": false,
+    "version": "5.22-agent.backport-5.22-mc1.21.1-2"
+  },
+  "pack": {
+    "commit": "c7bb230f21d14d26859d0b92548f089b3a493ad9",
+    "minecraft": "1.21.1",
+    "name": "All the Mons",
+    "neoforge": "21.1.248",
+    "version": "1.2.0"
+  },
+  "profile": "morered-1.21.1-6.0.0.3",
+  "schema": 1,
+  "source_use": "Runtime interfaces and installed resources may be interpreted only after family-specific evidence is recorded; no candidate classes, assets, binaries, source, or captured meshes are packaged."
+}
