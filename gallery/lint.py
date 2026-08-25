@@ -84,16 +84,27 @@ def main() -> int:
         path.read_text(encoding="utf-8")
         for path in sorted(function_root.glob("*.mcfunction"))
     )
-    expected_setblocks = len(cases.PLACEMENTS) * 2
+    expected_setblocks = len(cases.PLACEMENTS) * 2 + sum(
+        command.startswith("setblock ") for command in cases.SPECIAL_BUILD_COMMANDS
+    )
     if len(re.findall(r"^setblock ", functions, re.MULTILINE)) != expected_setblocks:
-        raise ValueError("build function must place one support and one anchor per case")
+        raise ValueError("build function setblock count differs from the declared cases")
+    for required in (
+        "topology-convex-red-alloy",
+        "topology-convex-bundled",
+        "topology-concave-red-alloy",
+        "topology-unlike-colors",
+    ):
+        if required not in functions:
+            raise ValueError(f"special topology case missing: {required}")
     lowered = functions.lower()
     for forbidden in ("summon ", "data merge", "op ", "deop ", "stop "):
         if forbidden in lowered:
             raise ValueError(f"forbidden gallery command: {forbidden}")
     print(
         f"More Red gallery lint passed: {len(cases.PLACEMENTS)} anchors, "
-        f"{len(expected_ids)} registered blocks, {len(cases.WIRE_IDS)} wire families"
+        f"{len(expected_ids)} registered blocks, {len(cases.WIRE_IDS)} wire families, "
+        "4 special topology cases"
     )
     return 0
 

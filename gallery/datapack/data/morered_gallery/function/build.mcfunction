@@ -231,4 +231,23 @@ setblock 200 100 203 morered:pulse_gate[facing=down,rotation=0,input_b=true]
 # stock-control: stone stock rendering control
 setblock 203 99 203 minecraft:stone
 setblock 203 100 203 minecraft:stone
+# topology-convex-red-alloy: down-to-north convex edge
+setblock 174 99 185 minecraft:stone
+setblock 174 99 186 morered:red_alloy_wire[north=true]
+setblock 174 100 185 morered:red_alloy_wire[down=true]
+setblock 174 100 186 morered:red_alloy_wire
+# topology-convex-bundled: down-to-north convex edge
+setblock 180 99 185 minecraft:stone
+setblock 180 99 186 morered:bundled_network_cable[north=true]
+setblock 180 100 185 morered:bundled_network_cable[down=true]
+setblock 180 100 186 morered:bundled_network_cable
+# topology-concave-red-alloy: co-located down+north elbow
+setblock 186 99 186 minecraft:stone
+setblock 186 100 185 minecraft:stone
+setblock 186 100 186 morered:red_alloy_wire[down=true,north=true]
+# topology-unlike-colors: adjacent nodes must not form a line
+setblock 192 99 186 minecraft:stone
+setblock 193 99 186 minecraft:stone
+setblock 192 100 186 morered:red_network_cable[down=true]
+setblock 193 100 186 morered:blue_network_cable[down=true]
 function morered_gallery:verify

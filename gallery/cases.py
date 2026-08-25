@@ -191,3 +191,36 @@ def build_placements() -> tuple[Placement, ...]:
 
 
 PLACEMENTS = build_placements()
+
+
+# Exact multi-cell topology cases whose supports are themselves wires or whose
+# placement order materially changes the derived connection state.
+SPECIAL_BUILD_COMMANDS = (
+    "# topology-convex-red-alloy: down-to-north convex edge",
+    "setblock 174 99 185 minecraft:stone",
+    "setblock 174 99 186 morered:red_alloy_wire[north=true]",
+    "setblock 174 100 185 morered:red_alloy_wire[down=true]",
+    "setblock 174 100 186 morered:red_alloy_wire",
+    "# topology-convex-bundled: down-to-north convex edge",
+    "setblock 180 99 185 minecraft:stone",
+    "setblock 180 99 186 morered:bundled_network_cable[north=true]",
+    "setblock 180 100 185 morered:bundled_network_cable[down=true]",
+    "setblock 180 100 186 morered:bundled_network_cable",
+    "# topology-concave-red-alloy: co-located down+north elbow",
+    "setblock 186 99 186 minecraft:stone",
+    "setblock 186 100 185 minecraft:stone",
+    "setblock 186 100 186 morered:red_alloy_wire[down=true,north=true]",
+    "# topology-unlike-colors: adjacent nodes must not form a line",
+    "setblock 192 99 186 minecraft:stone",
+    "setblock 193 99 186 minecraft:stone",
+    "setblock 192 100 186 morered:red_network_cable[down=true]",
+    "setblock 193 100 186 morered:blue_network_cable[down=true]",
+)
+
+SPECIAL_VERIFY_COMMANDS = (
+    "execute unless block 174 100 186 morered:red_alloy_wire run tellraw @a {\"text\":\"gallery mismatch: topology-convex-red-alloy\",\"color\":\"red\"}",
+    "execute unless block 180 100 186 morered:bundled_network_cable run tellraw @a {\"text\":\"gallery mismatch: topology-convex-bundled\",\"color\":\"red\"}",
+    "execute unless block 186 100 186 morered:red_alloy_wire run tellraw @a {\"text\":\"gallery mismatch: topology-concave-red-alloy\",\"color\":\"red\"}",
+    "execute unless block 192 100 186 morered:red_network_cable run tellraw @a {\"text\":\"gallery mismatch: topology-unlike-red\",\"color\":\"red\"}",
+    "execute unless block 193 100 186 morered:blue_network_cable run tellraw @a {\"text\":\"gallery mismatch: topology-unlike-blue\",\"color\":\"red\"}",
+)

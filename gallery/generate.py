@@ -69,6 +69,7 @@ def build_function() -> bytes:
                 f"{placement.block_state}",
             )
         )
+    lines.extend(cases.SPECIAL_BUILD_COMMANDS)
     lines.append(f"function {cases.NAMESPACE}:verify")
     return text_bytes("\n".join(lines))
 
@@ -81,6 +82,7 @@ def verify_function() -> bytes:
             f"{placement.block_state} run tellraw @a "
             f"{{\"text\":\"gallery mismatch: {placement.case_id}\",\"color\":\"red\"}}"
         )
+    lines.extend(cases.SPECIAL_VERIFY_COMMANDS)
     lines.append(
         "tellraw @a {\"text\":\"More Red gallery checked\","
         "\"color\":\"green\"}"

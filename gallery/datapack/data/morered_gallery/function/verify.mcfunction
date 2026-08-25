@@ -76,4 +76,9 @@ execute unless block 194 100 203 morered:hexidecrubrometer[face=floor,facing=nor
 execute unless block 197 100 203 morered:multiplexer[facing=down,rotation=0,input_b=true] run tellraw @a {"text":"gallery mismatch: multiplexer-input-b","color":"red"}
 execute unless block 200 100 203 morered:pulse_gate[facing=down,rotation=0,input_b=true] run tellraw @a {"text":"gallery mismatch: pulse-gate-input-b","color":"red"}
 execute unless block 203 100 203 minecraft:stone run tellraw @a {"text":"gallery mismatch: stock-control","color":"red"}
+execute unless block 174 100 186 morered:red_alloy_wire run tellraw @a {"text":"gallery mismatch: topology-convex-red-alloy","color":"red"}
+execute unless block 180 100 186 morered:bundled_network_cable run tellraw @a {"text":"gallery mismatch: topology-convex-bundled","color":"red"}
+execute unless block 186 100 186 morered:red_alloy_wire run tellraw @a {"text":"gallery mismatch: topology-concave-red-alloy","color":"red"}
+execute unless block 192 100 186 morered:red_network_cable run tellraw @a {"text":"gallery mismatch: topology-unlike-red","color":"red"}
+execute unless block 193 100 186 morered:blue_network_cable run tellraw @a {"text":"gallery mismatch: topology-unlike-blue","color":"red"}
 tellraw @a {"text":"More Red gallery checked","color":"green"}
