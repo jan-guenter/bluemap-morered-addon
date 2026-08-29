@@ -4,9 +4,11 @@ This repository stays inactive and stock-safe unless the exact supported More
 Red artifact is present. Keep new work bounded to observed rendering defects.
 
 Before running Gradle gates, activate a Python 3.11 or newer virtual
-environment and install the exact development-only toolkit into it:
+environment, initialize the exact development-tool submodule, and install the
+matching toolkit wheel into the environment:
 
 ```bash
+git submodule update --init --recursive -- tooling/bluemap-addon-toolkit
 python -m pip install --disable-pip-version-check --no-deps \
   --require-hashes --only-binary=:all: \
   --requirement requirements/toolkit.txt

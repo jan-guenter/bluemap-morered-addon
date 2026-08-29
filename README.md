@@ -10,6 +10,22 @@ mixed media, and convex corners.
 
 ## Build
 
+Clone with the exact development-tool submodule:
+
+```bash
+git clone --recurse-submodules \
+  https://github.com/jan-guenter/bluemap-morered-addon.git
+```
+
+For an existing clone, initialize it before running Gradle:
+
+```bash
+git submodule update --init --recursive -- tooling/bluemap-addon-toolkit
+```
+
+The settings preflight accepts only the committed toolkit gitlink at its exact
+expected commit and rejects an uninitialized, changed, or dirty submodule.
+
 ```bash
 gradle --no-daemon -PbluemapSourcePath=../bluemap-backport clean check build
 ```
