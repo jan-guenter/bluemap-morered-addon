@@ -50,11 +50,12 @@ Pass those properties to Gradle and run `prototypeCheck`. Run
 acceptance and release sealing. Follow `docs/EXECUTION.md` for the reusable
 prototype, acceptance, promotion and publication sequence.
 
-Before running Gradle in a fresh or existing checkout, initialize the pinned
-development toolkit:
+Before running Gradle in a fresh or existing checkout, initialize both pinned
+source dependencies:
 
 ```bash
-git submodule update --init --recursive -- tooling/bluemap-addon-toolkit
+git submodule update --init --recursive -- \
+  tooling/bluemap-addon-toolkit modules/bluemap-addon-runtime
 ```
 
 Never stage or commit generated build output, candidate JARs, galleries, worlds,

@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "status": "owner-accepted-release-candidate",
-  "version": "0.1.0-alpha.1",
-  "release_date": "2026-08-25",
+  "version": "0.1.0-alpha.2",
+  "release_date": "2026-08-30",
   "repository": "https://github.com/jan-guenter/bluemap-morered-addon",
-  "tag": "v0.1.0-alpha.1",
-  "maven_coordinate": "io.github.jan-guenter:bluemap-morered-addon:0.1.0-alpha.1",
+  "tag": "v0.1.0-alpha.2",
+  "maven_coordinate": "io.github.jan-guenter:bluemap-morered-addon:0.1.0-alpha.2",
   "owner_accepted_staging": {
     "commit": "83bad596a72a2bb3a1f7a68076e69b90ea33be42",
     "tree": "ad7f43afb4793b3c79eac62b6fdbba5532f21faa",
@@ -20,28 +20,28 @@
   "accepted_staging_entries": {
     "path": "provenance/accepted-staging-entries.sha256",
     "entry_count": 31,
-    "sha256": "f062e22bfe4b9cbc4716b05ebabb66453868f8d0f18a78ac28caf7f1aac0ebdc"
+    "sha256": "a3b0b8d54e147b2e0da3eb2e95c022ad13cdcb979ead7cae31f5d23c88f5e543"
   },
   "final_release_artifacts": {
     "production_jar": {
-      "file_name": "bluemap-morered-addon-0.1.0-alpha.1.jar",
-      "size": 93178,
-      "sha256": "8c146f92d2939a38093423e70dd7db248a28426fade75e5eb0cefb477dcc0f9d"
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.2.jar",
+      "size": 93967,
+      "sha256": "1c65d4320f0acdbed5bf520858540824459dcd7367b80245d06b23aed728ebb8"
     },
     "sources_jar": {
-      "file_name": "bluemap-morered-addon-0.1.0-alpha.1-sources.jar",
-      "size": 56478,
-      "sha256": "d654247036513ebf968261fe6e80e2062dbca45761b352ff92be23f9bbd0784b"
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.2-sources.jar",
+      "size": 57088,
+      "sha256": "6db012f4e5db6261049b7ed0b69a0ec0fdcc434dc467df14539c1ed82dded944"
     },
     "pom": {
-      "file_name": "bluemap-morered-addon-0.1.0-alpha.1.pom",
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.2.pom",
       "size": 1319,
-      "sha256": "c144c5b76f6ab6c53c4a5b4159492e9da6c502c32650011c31c64e71c6e84df3"
+      "sha256": "074ed8bbe2f5e6f4ae683d8d4a3c42220a1ee970b0a27d05b8cf849b1857f225"
     },
     "gradle_module": {
-      "file_name": "bluemap-morered-addon-0.1.0-alpha.1.module.json",
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.2.module.json",
       "size": 2817,
-      "sha256": "68209f0c70501f6e2b771fdebaa797ccc2b09b2107cf74aded43c004cadc9539"
+      "sha256": "021912128be41ca324c69d4ba37c1d822f8df7445bcc2f61055f6748aa80db29"
     }
   },
   "staged_equivalence": {
@@ -49,7 +49,39 @@
     "identical_non_manifest_entries": 31,
     "whole_jar_byte_identical": false,
     "only_changed_entry_bytes": "META-INF/MANIFEST.MF",
-    "change_reason": "Implementation-Version changed from the accepted SNAPSHOT marker to the final release version."
+    "change_reason": "The sealed alpha.2 functional entries match the reviewed runtime-module migration candidate; only the versioned manifest is excluded from the entry manifest."
+  },
+  "runtime_module_migration": {
+    "baseline_version": "0.1.0-alpha.1",
+    "baseline_release_commit": "845033ad8d49eab73986622dd964b6f5072a559e",
+    "baseline_production_jar_size": 93178,
+    "baseline_production_jar_sha256": "8c146f92d2939a38093423e70dd7db248a28426fade75e5eb0cefb477dcc0f9d",
+    "runtime_repository": "https://github.com/jan-guenter/bluemap-addon-runtime",
+    "runtime_version": "0.1.0-alpha.1",
+    "runtime_tag": "v0.1.0-alpha.1",
+    "runtime_commit": "6c062239f2669de9d20da32dc8b5372a5653b19d",
+    "runtime_source_tree": "c70cf01d3196eb8a8eeacb572f7f3ceb6f3e2025",
+    "production_archive": {
+      "old_entries": 32,
+      "new_entries": 32,
+      "unchanged_entries": 25,
+      "changed_common_entries": 3,
+      "removed_local_runtime_classes": 4,
+      "added_shared_runtime_classes": 4
+    },
+    "sources_archive": {
+      "old_entries": 22,
+      "new_entries": 22,
+      "unchanged_entries": 18,
+      "changed_callers": 2,
+      "removed_local_runtime_sources": 2,
+      "added_shared_runtime_sources": 2
+    },
+    "package_normalized_shared_sources_exact": true,
+    "package_normalized_shared_bytecode_exact": true,
+    "package_normalized_caller_bytecode_exact": true,
+    "gallery_byte_identical": true,
+    "behavior_change": false
   },
   "gallery": {
     "archive_file_name": "bluemap-morered-gallery.zip",

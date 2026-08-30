@@ -6,8 +6,8 @@ staging comparison needed to get useful visual feedback.
 
 After the owner accepts the candidate:
 
-1. Initialize the pinned development toolkit with
-   `git submodule update --init --recursive -- tooling/bluemap-addon-toolkit`.
+1. Initialize the pinned development toolkit and runtime source module with
+   `git submodule update --init --recursive -- tooling/bluemap-addon-toolkit modules/bluemap-addon-runtime`.
 2. Remove every scaffold implementation marker and confirm the generated
    bounded gallery and its stock control.
 3. Freeze the accepted staging JAR's non-manifest entry hashes in

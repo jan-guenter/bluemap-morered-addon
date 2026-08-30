@@ -10,8 +10,8 @@ import de.bluecolored.bluemap.core.resources.pack.resourcepack.ResourcePackExten
 import de.bluecolored.bluemap.core.util.Key;
 import de.bluecolored.bluemap.core.world.BlockProperties;
 import de.bluecolored.bluemap.core.world.BlockState;
+import io.github.janguenter.bluemap.addon.runtime.artifact.ExactArtifactDetector;
 import io.github.janguenter.bluemap.morered.activation.AddonRuntime;
-import io.github.janguenter.bluemap.morered.profile.ExactArtifactDetector;
 import io.github.janguenter.bluemap.morered.profile.MoreRed6003Profile;
 
 import java.nio.file.Path;

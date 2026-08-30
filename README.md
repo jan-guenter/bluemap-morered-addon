@@ -3,10 +3,11 @@
 A Java 21 BlueMap add-on for the exact `morered-1.21.1-6.0.0.3` profile in All the Mons
 `1.2.0` / Minecraft `1.21.1`.
 
-Status: owner-accepted `0.1.0-alpha.1` release candidate. After exact artifact
-admission, it renders all 18 face-wire families from More Red's installed
-models and textures, including straight runs, co-located elbows, compatible
-mixed media, and convex corners.
+Status: `0.1.0-alpha.2` integration candidate. It preserves the
+owner-accepted `0.1.0-alpha.1` rendering and sources exact-artifact admission
+from the pinned `bluemap-addon-runtime` module. After admission, it renders all
+18 face-wire families from More Red's installed models and textures, including
+straight runs, co-located elbows, compatible mixed media, and convex corners.
 
 ## Build
 
@@ -20,11 +21,14 @@ git clone --recurse-submodules \
 For an existing clone, initialize it before running Gradle:
 
 ```bash
-git submodule update --init --recursive -- tooling/bluemap-addon-toolkit
+git submodule update --init --recursive -- \
+  tooling/bluemap-addon-toolkit modules/bluemap-addon-runtime
 ```
 
-The settings preflight accepts only the committed toolkit gitlink at its exact
-expected commit and rejects an uninitialized, changed, or dirty submodule.
+The settings preflight accepts only the committed toolkit and runtime gitlinks
+at their exact expected commits and rejects an uninitialized, changed, or dirty
+submodule. The runtime's main Java sources are compiled into this add-on; its
+standalone JAR is never installed or nested.
 
 ```bash
 gradle --no-daemon -PbluemapSourcePath=../bluemap-backport clean check build
