@@ -14,6 +14,9 @@ python -m pip install --disable-pip-version-check --no-deps \
   --requirement requirements/toolkit.txt
 ```
 
+The requirement locks the 20,585-byte `v0.3.0-alpha.1` wheel at SHA-256
+`82f1ec53603646849a7c2d4b58f3fb7000413fe83043a302bee88cc88daeb8f7`.
+
 ## Prototype
 
 Acquire and verify the exact candidate JARs outside Git. Their Gradle
