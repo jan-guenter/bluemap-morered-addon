@@ -3,8 +3,13 @@
 pluginManagement {
     def toolkitPath = 'tooling/bluemap-addon-toolkit'
     def expectedToolkitCommit = '6cd34a8368cc4ee8628fbe830a90ec5b14960629'
+    def runtimePath = 'modules/bluemap-addon-runtime'
+    def expectedRuntimeCommit = '6c062239f2669de9d20da32dc8b5372a5653b19d'
+    def expectedRuntimeSourceTree = 'c70cf01d3196eb8a8eeacb572f7f3ceb6f3e2025'
     def consumerRoot = settings.settingsDir
     def toolkit = new File(consumerRoot, toolkitPath)
+    def runtime = new File(consumerRoot, runtimePath)
+    def runtimeSource = new File(runtime, 'src/main/java')
 
     if (!(expectedToolkitCommit ==~ /[0-9a-f]{40}/)
             || !new File(consumerRoot, '.git').exists()
@@ -15,8 +20,18 @@ pluginManagement {
                         + "Run: git submodule update --init --recursive -- ${toolkitPath}"
         )
     }
+    if (!(expectedRuntimeCommit ==~ /[0-9a-f]{40}/)
+            || !(expectedRuntimeSourceTree ==~ /[0-9a-f]{40}/)
+            || !runtime.isDirectory()
+            || !new File(runtime, '.git').exists()
+            || !runtimeSource.isDirectory()) {
+        throw new GradleException(
+                'Runtime trust preflight is not configured or initialized. '
+                        + "Run: git submodule update --init --recursive -- ${runtimePath}"
+        )
+    }
 
-    def toolkitGitOutput = { File repository, List<String> arguments, String operation ->
+    def trustedGitOutput = { File repository, List<String> arguments, String operation ->
         def execution = settings.providers.exec {
             commandLine(['git', '-C', repository.absolutePath] + arguments)
             ignoreExitValue = true
@@ -34,14 +49,14 @@ pluginManagement {
         output
     }
 
-    if (!toolkitGitOutput(consumerRoot, ['rev-parse', '--show-prefix'],
+    if (!trustedGitOutput(consumerRoot, ['rev-parse', '--show-prefix'],
             'verify the consumer root').isEmpty()) {
         throw new GradleException('settings.gradle must be at the Git worktree root')
     }
 
-    def tree = toolkitGitOutput(consumerRoot, ['ls-tree', 'HEAD', '--', toolkitPath],
+    def tree = trustedGitOutput(consumerRoot, ['ls-tree', 'HEAD', '--', toolkitPath],
             'read the committed toolkit gitlink').tokenize(' \t')
-    def index = toolkitGitOutput(consumerRoot, ['ls-files', '--stage', '--', toolkitPath],
+    def index = trustedGitOutput(consumerRoot, ['ls-files', '--stage', '--', toolkitPath],
             'read the indexed toolkit gitlink').tokenize(' \t')
     if (tree.size() != 4 || tree[0] != '160000' || tree[1] != 'commit'
             || tree[2] != expectedToolkitCommit || tree[3] != toolkitPath
@@ -51,13 +66,41 @@ pluginManagement {
         throw new GradleException('Committed/indexed toolkit gitlink does not match its pin')
     }
 
-    def toolkitHead = toolkitGitOutput(toolkit, ['rev-parse', '--verify', 'HEAD^{commit}'],
+    def toolkitHead = trustedGitOutput(toolkit, ['rev-parse', '--verify', 'HEAD^{commit}'],
             'read toolkit HEAD')
-    def toolkitStatus = toolkitGitOutput(toolkit,
+    def toolkitStatus = trustedGitOutput(toolkit,
             ['status', '--porcelain=v1', '--untracked-files=all',
              '--ignore-submodules=none'], 'verify the toolkit worktree')
     if (toolkitHead != expectedToolkitCommit || !toolkitStatus.isEmpty()) {
         throw new GradleException('Toolkit HEAD differs from the gitlink or is dirty')
+    }
+
+    def runtimeTree = trustedGitOutput(consumerRoot,
+            ['ls-tree', 'HEAD', '--', runtimePath],
+            'read the committed runtime gitlink').tokenize(' \t')
+    def runtimeIndex = trustedGitOutput(consumerRoot,
+            ['ls-files', '--stage', '--', runtimePath],
+            'read the indexed runtime gitlink').tokenize(' \t')
+    if (runtimeTree.size() != 4 || runtimeTree[0] != '160000'
+            || runtimeTree[1] != 'commit' || runtimeTree[2] != expectedRuntimeCommit
+            || runtimeTree[3] != runtimePath || runtimeIndex.size() != 4
+            || runtimeIndex[0] != '160000' || runtimeIndex[1] != expectedRuntimeCommit
+            || runtimeIndex[2] != '0' || runtimeIndex[3] != runtimePath) {
+        throw new GradleException('Committed/indexed runtime gitlink does not match its pin')
+    }
+
+    def runtimeHead = trustedGitOutput(runtime,
+            ['rev-parse', '--verify', 'HEAD^{commit}'], 'read runtime HEAD')
+    def runtimeSourceTree = trustedGitOutput(runtime,
+            ['rev-parse', 'HEAD:src/main/java'], 'read runtime source tree')
+    def runtimeStatus = trustedGitOutput(runtime,
+            ['status', '--porcelain=v1', '--untracked-files=all',
+             '--ignore-submodules=none'], 'verify the runtime worktree')
+    if (runtimeHead != expectedRuntimeCommit || runtimeSourceTree != expectedRuntimeSourceTree
+            || !runtimeStatus.isEmpty()) {
+        throw new GradleException(
+                'Runtime HEAD/source tree differs from the pin or is dirty'
+        )
     }
 
     def gradleBuild = new File(toolkit, 'gradle')

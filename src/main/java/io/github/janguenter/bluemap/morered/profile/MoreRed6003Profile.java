@@ -4,6 +4,8 @@
 
 package io.github.janguenter.bluemap.morered.profile;
 
+import io.github.janguenter.bluemap.addon.runtime.artifact.ArtifactPin;
+
 import java.util.List;
 
 /** Exact All the Mons 1.2.0 profile `morered-1.21.1-6.0.0.3`. */

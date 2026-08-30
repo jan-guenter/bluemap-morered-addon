@@ -14,6 +14,10 @@ base {
     archivesName = artifact_id
 }
 
+sourceSets {
+    main.java.srcDir 'modules/bluemap-addon-runtime/src/main/java'
+}
+
 repositories {
     mavenCentral()
     maven {
@@ -99,6 +103,17 @@ tasks.named('sourcesJar', Jar).configure {
 
 def productionJar = tasks.named('jar', Jar).flatMap { it.archiveFile }
 def publishedSourcesJar = tasks.named('sourcesJar', Jar).flatMap { it.archiveFile }
+def sharedRuntimePackage = 'io/github/janguenter/bluemap/addon/runtime/artifact/'
+def sharedRuntimeClasses = [
+        "${sharedRuntimePackage}ArtifactPin.class",
+        "${sharedRuntimePackage}ExactArtifactDetector\$LexedLine.class",
+        "${sharedRuntimePackage}ExactArtifactDetector\$QuoteMode.class",
+        "${sharedRuntimePackage}ExactArtifactDetector.class"
+].collect { it.toString() }
+def sharedRuntimeSources = [
+        "${sharedRuntimePackage}ArtifactPin.java",
+        "${sharedRuntimePackage}ExactArtifactDetector.java"
+].collect { it.toString() }
 
 tasks.register('verifyGeneratedGallery', Exec) {
     commandLine 'python3', 'gallery/generate.py', '--check'
@@ -147,10 +162,16 @@ tasks.register('verifyProductionJar') {
                     'META-INF/NOTICE-bluemap-morered-addon.md',
                     'META-INF/THIRD_PARTY-bluemap-morered-addon.md',
                     'META-INF/bluemap-morered/upstreams.json'
-            ]
+            ] + sharedRuntimeClasses
             def missing = required.findAll { !entries.contains(it) }
-            if (!missing.isEmpty()) {
-                throw new GradleException("Production JAR is missing: ${missing}")
+            def duplicateShared = sharedRuntimeClasses.findAll { shared ->
+                entries.count { it == shared } != 1
+            }
+            if (!missing.isEmpty() || !duplicateShared.isEmpty()) {
+                throw new GradleException(
+                        "Production JAR shared boundary mismatch: missing=${missing}, "
+                                + "nonUnique=${duplicateShared}"
+                )
             }
             def descriptor = new groovy.json.JsonSlurper().parseText(
                     zip.getInputStream(zip.getEntry('bluemap.addon.json')).getText('UTF-8')
@@ -172,8 +193,17 @@ tasks.register('verifyProductionJar') {
                         || entry.startsWith('net/neoforged/')
                         || entry.startsWith('gallery/')
                         || entry.endsWith('/bootstrap.json')
+                        || entry.startsWith(
+                            'io/github/janguenter/bluemap/morered/profile/ArtifactPin'
+                        )
+                        || entry.startsWith(
+                            'io/github/janguenter/bluemap/morered/profile/ExactArtifactDetector'
+                        )
+                        || (entry.startsWith(sharedRuntimePackage)
+                            && !sharedRuntimeClasses.contains(entry))
                         || (entry.endsWith('.class')
-                            && !entry.startsWith('io/github/janguenter/bluemap/morered/'))
+                            && !entry.startsWith('io/github/janguenter/bluemap/morered/')
+                            && !sharedRuntimeClasses.contains(entry))
                         || candidateIds.any { entry.startsWith("assets/${it}/") }
             }
             if (!forbidden.isEmpty()) {
@@ -200,11 +230,15 @@ tasks.register('verifySourcesJar') {
                     'META-INF/LICENSE-bluemap-morered-addon',
                     'META-INF/LICENSE-BlueMap',
                     'META-INF/bluemap-morered/upstreams.json'
-            ]
+            ] + sharedRuntimeSources
             def missing = required.findAll { !entries.contains(it) }
+            def duplicateShared = sharedRuntimeSources.findAll { shared ->
+                entries.count { it == shared } != 1
+            }
             def projectJava = entries.findAll { it.endsWith('.java') }
             def foreignJava = projectJava.findAll {
                 !it.startsWith('io/github/janguenter/bluemap/morered/')
+                        && !sharedRuntimeSources.contains(it)
             }
             def candidateIds = new groovy.json.JsonSlurper()
                     .parse(file('provenance/upstreams.json')).artifacts*.mod_id
@@ -218,15 +252,21 @@ tasks.register('verifySourcesJar') {
                         || entry.startsWith('net/neoforged/')
                         || entry.startsWith('gallery/')
                         || entry.endsWith('/bootstrap.json')
+                        || entry == 'io/github/janguenter/bluemap/morered/profile/ArtifactPin.java'
+                        || entry == 'io/github/janguenter/bluemap/morered/profile/ExactArtifactDetector.java'
+                        || (entry.startsWith(sharedRuntimePackage)
+                            && !sharedRuntimeSources.contains(entry))
                         || candidateIds.any { entry.startsWith("assets/${it}/") }
             }
             if (!missing.isEmpty()
+                    || !duplicateShared.isEmpty()
                     || projectJava.isEmpty()
                     || !foreignJava.isEmpty()
                     || !forbidden.isEmpty()) {
                 throw new GradleException(
                         "Sources JAR boundary mismatch: missing=${missing}, "
-                                + "foreignJava=${foreignJava}, forbidden=${forbidden}"
+                                + "nonUnique=${duplicateShared}, foreignJava=${foreignJava}, "
+                                + "forbidden=${forbidden}"
                 )
             }
         } finally {
