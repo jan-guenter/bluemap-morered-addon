@@ -4,12 +4,13 @@ This repository stays inactive and stock-safe unless the exact supported More
 Red artifact is present. Keep new work bounded to observed rendering defects.
 
 Before running Gradle gates, activate a Python 3.11 or newer virtual
-environment, initialize the exact development-tool and runtime source
-submodules, and install the matching toolkit wheel into the environment:
+environment, initialize the exact development-tool, runtime, and Adapter API
+source submodules, and install the matching toolkit wheel into the environment:
 
 ```bash
 git submodule update --init --recursive -- \
-  tooling/bluemap-addon-toolkit modules/bluemap-addon-runtime
+  tooling/bluemap-addon-toolkit modules/bluemap-addon-runtime \
+  modules/bluemap-addon-adapter-api
 python -m pip install --disable-pip-version-check --no-deps \
   --require-hashes --only-binary=:all: \
   --requirement requirements/toolkit.txt
@@ -31,7 +32,7 @@ properties are:
 Then run:
 
 ```bash
-gradle --no-daemon -PbluemapSourcePath=../bluemap-backport \
+gradle --no-daemon -PbluemapSourcePath=/path/to/BlueMap-at-7e07f4e7 \
   <exact-candidate-properties> clean prototypeCheck build
 bash gallery/package.sh /tmp/morered-gallery.zip
 ```
@@ -42,32 +43,22 @@ observed defects until the owner explicitly accepts one exact staging JAR.
 
 ## Acceptance and release
 
-Freeze that accepted JAR's functional entries once; the writer refuses to
-overwrite an existing acceptance record:
-
-```bash
-bluemap-addon-toolkit jar-entries write \
-  --jar /absolute/path/accepted-staging.jar \
-  --entries provenance/accepted-staging-entries.sha256
-```
-
-Record the manifest in `provenance/release.json` as
-`accepted_staging_entries` with exact `path`, `entry_count`, and `sha256`.
-Record `visual_acceptance: true` under `owner_accepted_staging`, and record the
-production JAR, sources JAR, POM and Gradle module file names, sizes and hashes
-under `final_release_artifacts`.
+The migration candidate records the production JAR, sources JAR, POM, and
+Gradle module identities under `candidate_artifacts`. After visual acceptance,
+change the provenance status to `owner-accepted-release-candidate` and record
+the exact integration run and accepted JAR under `owner_accepted_staging`.
 
 Promote `addon_version` through a pull request, remove every scaffold
 implementation marker, and run with all exact candidate properties:
 
 ```bash
-gradle --no-daemon -PbluemapSourcePath=../bluemap-backport \
-  <exact-candidate-properties> -PreleaseTag=v<version> \
+gradle --no-daemon -PbluemapSourcePath=/path/to/BlueMap-at-7e07f4e7 \
+  <exact-candidate-properties> -PreleaseTag=v0.1.0-alpha.3 \
   clean build generatePomFileForAddonPublication \
   generateMetadataFileForAddonPublication verifyReleaseCandidate
 ```
 
-Merge only after final-version CI passes this gate. Create an annotated
+Merge only after owner acceptance and final-head CI pass this gate. Create an annotated
 `v<version>` tag at reviewed `main`; the release workflow independently checks
 the tag, exact BlueMap checkout, accepted bytes and draft assets before making
 the prerelease public. Publication never deploys to production.

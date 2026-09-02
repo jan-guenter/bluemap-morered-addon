@@ -2,15 +2,17 @@
  * SPDX-License-Identifier: MIT
  */
 
-package io.github.janguenter.bluemap.morered.adapter.bluemap522;
+package io.github.janguenter.bluemap.morered.adapter.bluemap523;
 
 import de.bluecolored.bluemap.core.map.hires.block.BlockRendererType;
 import de.bluecolored.bluemap.core.resources.pack.resourcepack.ResourcePack;
 import de.bluecolored.bluemap.core.util.Key;
+import io.github.janguenter.bluemap.addon.adapter.api.bluemap523.RegistryGuard;
+import io.github.janguenter.bluemap.addon.adapter.api.bluemap523.ResourceExtensionType;
 import io.github.janguenter.bluemap.morered.activation.AddonRuntime;
 
-/** BlueMap 5.22 registration boundary for the exact More Red wire profile. */
-public final class BlueMap522Adapter {
+/** BlueMap 5.23 feature-backport registration boundary for More Red wires. */
+public final class BlueMap523Adapter {
 
     private static final AddonRuntime RUNTIME = AddonRuntime.INSTANCE;
     private static final BlockRendererType RENDERER = new BlockRendererType.Impl(
@@ -19,9 +21,12 @@ public final class BlueMap522Adapter {
                     new MoreRedWireRenderer(pack, gallery, settings, RUNTIME)
     );
     private static final ResourcePack.Extension<ProfileResourceExtension> EXTENSION =
-            new ProfileResourceExtensionType(RENDERER, RUNTIME);
+            new ResourceExtensionType<>(
+                    Key.parse("bluemap_morered:exact_profile"),
+                    pack -> new ProfileResourceExtension(pack, RENDERER, RUNTIME)
+            );
 
-    private BlueMap522Adapter() {
+    private BlueMap523Adapter() {
     }
 
     /** Registers the renderer and exact-profile resource extension atomically. */

@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-package io.github.janguenter.bluemap.morered.adapter.bluemap522;
+package io.github.janguenter.bluemap.morered.adapter.bluemap523;
 
 import de.bluecolored.bluemap.core.map.TextureGallery;
 import de.bluecolored.bluemap.core.map.hires.MaxCapacityReachedException;
@@ -108,7 +108,7 @@ final class MoreRedWireRenderer implements BlockRenderer {
     }
 
     private static boolean isPartsVariant(String blockId, Variant variant) {
-        return variant.getRenderer() == BlueMap522Adapter.renderer()
+        return variant.getRenderer() == BlueMap523Adapter.renderer()
                 && MoreRedWireCatalog.modelKey(blockId, "parts").equals(variant.getModel())
                 && !variant.isTransformed()
                 && !variant.isUvlock();

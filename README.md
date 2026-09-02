@@ -3,9 +3,10 @@
 A Java 21 BlueMap add-on for the exact `morered-1.21.1-6.0.0.3` profile in All the Mons
 `1.2.0` / Minecraft `1.21.1`.
 
-Status: `0.1.0-alpha.2` integration candidate. It preserves the
-owner-accepted `0.1.0-alpha.1` rendering and sources exact-artifact admission
-from the pinned `bluemap-addon-runtime` module. After admission, it renders all
+Version `0.1.0-alpha.3` is the owner-accepted native BlueMap 5.23 release
+candidate. It preserves the owner-accepted `0.1.0-alpha.2` rendering and
+sources exact-artifact admission from the pinned `bluemap-addon-runtime`
+module. After admission, it renders all
 18 face-wire families from More Red's installed models and textures, including
 straight runs, co-located elbows, compatible mixed media, and convex corners.
 
@@ -22,16 +23,21 @@ For an existing clone, initialize it before running Gradle:
 
 ```bash
 git submodule update --init --recursive -- \
-  tooling/bluemap-addon-toolkit modules/bluemap-addon-runtime
+  tooling/bluemap-addon-toolkit modules/bluemap-addon-runtime \
+  modules/bluemap-addon-adapter-api
 ```
 
-The settings preflight accepts only the committed toolkit and runtime gitlinks
-at their exact expected commits and rejects an uninitialized, changed, or dirty
-submodule. The runtime's main Java sources are compiled into this add-on; its
-standalone JAR is never installed or nested.
+The settings preflight accepts only the committed toolkit, runtime, and
+Adapter API gitlinks at their exact expected commits and rejects an
+uninitialized, changed, or dirty submodule. The modules' main Java sources are
+compiled into this add-on; their standalone JARs are never installed or nested.
 
 ```bash
-gradle --no-daemon -PbluemapSourcePath=../bluemap-backport clean check build
+gradle --no-daemon -PbluemapSourcePath=/path/to/BlueMap-at-7e07f4e7 \
+  -PmoreRedJar=/path/to/morered-1.21.1-6.0.0.3.jar \
+  -PreleaseTag=v0.1.0-alpha.3 clean prototypeCheck build \
+  generatePomFileForAddonPublication \
+  generateMetadataFileForAddonPublication verifyReleaseCandidate
 ```
 
 `check` is the quick Java/checkstyle/archive gate. `prototypeCheck` additionally

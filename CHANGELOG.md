@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0-alpha.3 - 2026-09-02
+
+- Migrated the adapter and exact runtime admission to the tested BlueMap 5.23
+  feature backport.
+- Replaced local compatibility, registry, and extension-factory helpers with
+  the pinned four-source `bluemap-addon-adapter-api` module.
+- Preserved all 18 routed wire families and the 77-anchor gallery.
+
 ## 0.1.0-alpha.2 - 2026-08-30
 
 - Replaced the add-on-local exact-artifact admission copies with the pinned
