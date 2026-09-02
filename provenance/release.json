@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
-  "status": "unpublished-migration-candidate",
+  "status": "owner-accepted-release-candidate",
+  "published": false,
   "published": false,
   "version": "0.1.0-alpha.3",
   "release_date": "2026-09-02",
@@ -90,9 +91,57 @@
     "production_archive_boundary_gate": true,
     "sources_archive_boundary_gate": true,
     "local_candidate_artifact_identity_gate": true,
-    "authoritative_pr_ci_reproduction": false,
+    "authoritative_pr_ci_reproduction": true,
     "local_gradle_version": "9.6.1",
     "local_java_runtime": "21.0.12.1+1",
-    "exact_alpha_3_runtime_review": false
+    "exact_alpha_3_runtime_review": true
+  },
+  "owner_accepted_staging": {
+    "visual_acceptance": true,
+    "accepted_on": "2026-09-02",
+    "scope": "Owner accepted the More Red gallery in the combined BlueMap 5.23 integration review. The accepted renderer, profile, textures, gallery, and all non-entrypoint production classes are the alpha.3 candidate bytes; the aggregate staging JAR differs only at the standard integration activation-check and logging entrypoint overlay.",
+    "integration_run": "bluemap-atmons-integration-20260902-next-review-batch-v41-logistics-fixed-deploy",
+    "candidate_manifest": {
+      "sha256": "f1e0f069d5fce990c8cbc4e007db8c5239d4ca736078fa58fa221ac351cb70ae",
+      "local_candidate_base_source_commit": "7d3612d21bbf8ffd6d03fcde6ac750efd63804ba",
+      "local_candidate_base_artifact": {
+        "file_name": "bluemap-morered-addon-0.1.0-alpha.3.jar",
+        "size": 99257,
+        "sha256": "9b7250e368e2d00127fc048fed363659785191ace59cd4cb6210187d8e373134"
+      },
+      "aggregate_staging_artifact": {
+        "file_name": "bluemap-morered-addon-0.1.0-alpha.1.jar",
+        "size": 99619,
+        "sha256": "d02c39c0d451353f4a50c40ae2d72a2606d6c11beb6ae6b6d3ee0c1842204fe6"
+      },
+      "archive_comparison": {
+        "identical_non_entrypoint_files": 33,
+        "different_files": [
+          "io/github/janguenter/bluemap/morered/BlueMapMoreRedAddon.class"
+        ]
+      }
+    }
+  },
+  "final_release_artifacts": {
+    "production_jar": {
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.3.jar",
+      "size": 99257,
+      "sha256": "9b7250e368e2d00127fc048fed363659785191ace59cd4cb6210187d8e373134"
+    },
+    "sources_jar": {
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.3-sources.jar",
+      "size": 62317,
+      "sha256": "122e07e0d2247a0f38ef207a00c88f7a2d18f06213f7645a50270302fabfddca"
+    },
+    "pom": {
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.3.pom",
+      "size": 1319,
+      "sha256": "2c47f4b562f646242f3ae2f31faad9f518f02f47e4e0fa4dacbd90c2743c4e55"
+    },
+    "gradle_module": {
+      "file_name": "bluemap-morered-addon-0.1.0-alpha.3.module.json",
+      "size": 2817,
+      "sha256": "3753ea6fe5602b9a3c4600480a432e12905c3f117652bf200f207c9bc719c46d"
+    }
   }
 }

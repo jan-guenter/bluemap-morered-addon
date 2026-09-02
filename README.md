@@ -3,7 +3,7 @@
 A Java 21 BlueMap add-on for the exact `morered-1.21.1-6.0.0.3` profile in All the Mons
 `1.2.0` / Minecraft `1.21.1`.
 
-Version `0.1.0-alpha.3` is the unpublished native BlueMap 5.23 migration
+Version `0.1.0-alpha.3` is the owner-accepted native BlueMap 5.23 release
 candidate. It preserves the owner-accepted `0.1.0-alpha.2` rendering and
 sources exact-artifact admission from the pinned `bluemap-addon-runtime`
 module. After admission, it renders all

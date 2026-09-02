@@ -463,7 +463,10 @@ tasks.register('verifyReleaseMetadata') {
         def release = new groovy.json.JsonSlurper()
                 .parse(file('provenance/release.json'))
         def expectedRepository = 'https://github.com/jan-guenter/bluemap-morered-addon'
-        if (release.status != 'unpublished-migration-candidate'
+        if (!(release.status in [
+                    'unpublished-migration-candidate',
+                    'owner-accepted-release-candidate'
+                ])
                 || release.version != project.version.toString()
                 || release.repository != expectedRepository
                 || !(release.candidate_artifacts instanceof Map)
